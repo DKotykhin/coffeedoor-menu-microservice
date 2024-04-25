@@ -16,10 +16,8 @@ services:
     restart: always
     ports:
       - "9901:5432"
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: menu_db
+    env_file:
+      - .env.stage.docker
     volumes:
       - pg_data:/var/lib/postgresql/data
 
