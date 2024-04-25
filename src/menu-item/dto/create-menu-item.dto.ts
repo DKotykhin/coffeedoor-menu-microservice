@@ -9,7 +9,7 @@ import {
 
 import { LanguageCode } from '../../database/db.enums';
 
-export class CreateMenuCategoryDto {
+export class CreateMenuItemDto {
   @IsEnum(LanguageCode)
   language: LanguageCode;
 
@@ -21,14 +21,18 @@ export class CreateMenuCategoryDto {
   @IsString()
   description: string;
 
-  @IsOptional()
+  @IsNotEmpty()
   @IsString()
-  image?: string;
+  price: string;
 
   @IsOptional()
   @IsBoolean()
-  hidden?: boolean;
+  hidden: boolean;
 
   @IsNumber()
   position: number;
+
+  @IsNotEmpty()
+  @IsString()
+  categoryId: string;
 }

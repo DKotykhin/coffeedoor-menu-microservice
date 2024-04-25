@@ -1,22 +1,22 @@
-import { Column, Entity, OneToMany } from 'typeorm';
+import { Column, Entity, ManyToOne } from 'typeorm';
 
-import { MenuItem } from '../../menu-item/entities/menu-item.entity';
+import { MenuCategory } from '../../menu-category/entities/menu-category.entity';
 import { BaseEntity } from '../../database/base.entity';
 import { LanguageCode } from '../../database/db.enums';
 
 @Entity()
-export class MenuCategory extends BaseEntity {
+export class MenuItem extends BaseEntity {
   @Column({ type: 'enum', enum: LanguageCode, default: LanguageCode.UA })
   language: LanguageCode;
 
   @Column()
   title: string;
 
-  @Column()
+  @Column({ nullable: true })
   description: string;
 
-  @Column({ nullable: true })
-  image: string;
+  @Column()
+  price: string;
 
   @Column({ default: false })
   hidden: boolean;
@@ -24,10 +24,13 @@ export class MenuCategory extends BaseEntity {
   @Column({ default: 0 })
   position: number;
 
-  @OneToMany(() => MenuItem, (item) => item.category, { cascade: true })
-  menuItems: MenuItem[];
+  @ManyToOne(() => MenuCategory, (item) => item.menuItems, {
+    onDelete: 'CASCADE',
+    nullable: false,
+  })
+  category: MenuCategory;
 
-  constructor(partial: Partial<MenuCategory>) {
+  constructor(partial: Partial<MenuItem>) {
     super(partial);
     Object.assign(this, partial);
   }
