@@ -2,11 +2,13 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, Repository } from 'typeorm';
 
-import { CreateMenuItemDto } from './dto/create-menu-item.dto';
-import { UpdateMenuItemDto } from './dto/update-menu-item.dto';
+import { StatusResponseDto } from '../types/status-response';
+import {
+  ChangeMenuItemPositionDto,
+  CreateMenuItemDto,
+  UpdateMenuItemDto,
+} from './dto/_index';
 import { MenuItem } from './entities/menu-item.entity';
-import { ChangeMenuItemPositionDto } from './dto/change-menu-item-position.dto';
-import { StatusResponseDto } from './dto/status-response.dto';
 
 @Injectable()
 export class MenuItemService {

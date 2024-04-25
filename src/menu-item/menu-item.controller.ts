@@ -1,12 +1,14 @@
 import { Controller, Logger } from '@nestjs/common';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 
+import { StatusResponseDto } from '../types/status-response';
 import { MenuItemService } from './menu-item.service';
-import { CreateMenuItemDto } from './dto/create-menu-item.dto';
-import { UpdateMenuItemDto } from './dto/update-menu-item.dto';
-import { ChangeMenuItemPositionDto } from './dto/change-menu-item-position.dto';
+import {
+  ChangeMenuItemPositionDto,
+  CreateMenuItemDto,
+  UpdateMenuItemDto,
+} from './dto/_index';
 import { MenuItem } from './entities/menu-item.entity';
-import { StatusResponseDto } from './dto/status-response.dto';
 
 @Controller()
 export class MenuItemController {

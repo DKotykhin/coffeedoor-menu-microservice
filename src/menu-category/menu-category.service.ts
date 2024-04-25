@@ -3,11 +3,13 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, Repository } from 'typeorm';
 
 import { LanguageCode } from '../database/db.enums';
-import { CreateMenuCategoryDto } from './dto/create-menu-category.dto';
-import { UpdateMenuCategoryDto } from './dto/update-menu-category.dto';
+import { StatusResponseDto } from '../types/status-response';
+import {
+  ChangeMenuCategoryPositionDto,
+  CreateMenuCategoryDto,
+  UpdateMenuCategoryDto,
+} from './dto/_index';
 import { MenuCategory } from './entities/menu-category.entity';
-import { ChangeMenuCategoryPositionDto } from './dto/change-menu-category-position.dto';
-import { StatusResponseDto } from './dto/status-response.dto';
 
 @Injectable()
 export class MenuCategoryService {

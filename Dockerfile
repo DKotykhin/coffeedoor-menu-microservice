@@ -15,6 +15,5 @@ COPY . /app
 # Build the app
 RUN npm run build
 
-EXPOSE 4004
 # CMD [ "npm", "run", "start:dev" ]
 CMD [ "npm", "start" ]
