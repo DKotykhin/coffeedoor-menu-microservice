@@ -2,7 +2,6 @@ import { Controller, Logger } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
 
 import { StatusResponseDto } from '../types/status-response';
-import { LanguageCode as LanguageCodeDB } from '../database/db.enums';
 import { MenuItemService } from './menu-item.service';
 import {
   ChangeMenuItemPositionDto,
@@ -12,7 +11,6 @@ import {
 import { MenuItem } from './entities/menu-item.entity';
 import {
   MENU_ITEM_SERVICE_NAME,
-  LanguageCode,
   MenuItemServiceControllerMethods,
 } from './menu-item.pb';
 
@@ -48,12 +46,7 @@ export class MenuItemController {
     createMenuItemDto: CreateMenuItemDto,
   ): Promise<MenuItem> {
     this.logger.log('Received createMenuItem request');
-    return await this.menuItemService.create({
-      ...createMenuItemDto,
-      language: LanguageCode[
-        createMenuItemDto.language
-      ] as unknown as LanguageCodeDB,
-    });
+    return await this.menuItemService.create(createMenuItemDto);
   }
 
   // @MessagePattern('updateMenuItem')

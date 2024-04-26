@@ -43,6 +43,12 @@ export class MenuCategoryService {
     try {
       return await this.menuCategoryRepository.find({
         relations: ['menuItems'],
+        order: {
+          position: 'ASC',
+          menuItems: {
+            position: 'ASC',
+          },
+        },
       });
     } catch (error) {
       throw new HttpException(error.message, HttpStatus.NOT_FOUND);

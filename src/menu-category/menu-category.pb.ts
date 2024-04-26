@@ -4,18 +4,12 @@ import { Observable } from "rxjs";
 
 export const protobufPackage = "menuCategory";
 
-export enum LanguageCode {
-  UA = 0,
-  EN = 1,
-  UNRECOGNIZED = -1,
-}
-
 export interface Empty {
 }
 
 export interface MenuCategory {
   id: string;
-  language: LanguageCode;
+  language: string;
   title: string;
   description: string;
   image: string;
@@ -26,7 +20,7 @@ export interface MenuCategory {
 
 export interface MenuItem {
   id: string;
-  language: LanguageCode;
+  language: string;
   title: string;
   description: string;
   price: string;
@@ -40,7 +34,7 @@ export interface MenuCategories {
 }
 
 export interface MenuCategoryLanguage {
-  language: LanguageCode;
+  language: string;
 }
 
 export interface MenuCategoryId {
@@ -48,7 +42,7 @@ export interface MenuCategoryId {
 }
 
 export interface CreateMenuCategoryRequest {
-  language: LanguageCode;
+  language: string;
   title: string;
   description: string;
   image: string;

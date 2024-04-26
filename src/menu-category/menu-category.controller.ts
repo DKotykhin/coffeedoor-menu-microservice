@@ -2,7 +2,7 @@ import { Controller, Logger } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
 
 import { StatusResponseDto } from '../types/status-response';
-import { LanguageCode as LanguageCodeDB } from '../database/db.enums';
+import { LanguageCode } from '../database/db.enums';
 import { MenuCategoryService } from './menu-category.service';
 import {
   ChangeMenuCategoryPositionDto,
@@ -11,7 +11,6 @@ import {
 } from './dto/_index';
 import { MenuCategory } from './entities/menu-category.entity';
 import {
-  LanguageCode,
   MENU_CATEGORY_SERVICE_NAME,
   MenuCategoryServiceControllerMethods,
 } from './menu-category.pb';
@@ -30,9 +29,8 @@ export class MenuCategoryController {
     language: LanguageCode;
   }): Promise<{ menuCategories: MenuCategory[] }> {
     this.logger.log('Received findMenuCategoryByLanguage request');
-    const menuCategories = await this.menuCategoryService.findByLanguage(
-      LanguageCode[language] as LanguageCodeDB,
-    );
+    const menuCategories =
+      await this.menuCategoryService.findByLanguage(language);
     return { menuCategories };
   }
 
@@ -57,12 +55,7 @@ export class MenuCategoryController {
     createMenuCategoryDto: CreateMenuCategoryDto,
   ): Promise<MenuCategory> {
     this.logger.log('Received createMenuCategory request');
-    return this.menuCategoryService.create({
-      ...createMenuCategoryDto,
-      language: LanguageCode[
-        createMenuCategoryDto.language
-      ] as unknown as LanguageCodeDB,
-    });
+    return this.menuCategoryService.create(createMenuCategoryDto);
   }
 
   // @MessagePattern('updateMenuCategory')

@@ -4,18 +4,13 @@ package menuItem;
 
 message MenuItem {
   string id = 1;
-  LanguageCode language = 2;
+  string language = 2;
   string title = 3;
   string description = 4;
   string price = 5;
   bool hidden = 6;
   int32 position = 7;
   Id category = 8;
-}
-
-enum LanguageCode {
-    UA = 0;
-    EN = 1;
 }
 
 message MenuItems {
@@ -28,7 +23,7 @@ message Id {
   string id = 1;
 }
 message CreateMenuItemRequest {
-  LanguageCode language = 1;
+  string language = 1;
   string title = 2;
   string description = 3;
   string price = 4;

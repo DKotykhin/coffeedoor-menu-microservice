@@ -4,15 +4,9 @@ import { Observable } from "rxjs";
 
 export const protobufPackage = "menuItem";
 
-export enum LanguageCode {
-  UA = 0,
-  EN = 1,
-  UNRECOGNIZED = -1,
-}
-
 export interface MenuItem {
   id: string;
-  language: LanguageCode;
+  language: string;
   title: string;
   description: string;
   price: string;
@@ -34,7 +28,7 @@ export interface Id {
 }
 
 export interface CreateMenuItemRequest {
-  language: LanguageCode;
+  language: string;
   title: string;
   description: string;
   price: string;
