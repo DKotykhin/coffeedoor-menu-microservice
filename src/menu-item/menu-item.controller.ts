@@ -1,7 +1,8 @@
 import { Controller, Logger } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import { GrpcMethod } from '@nestjs/microservices';
 
 import { StatusResponseDto } from '../types/status-response';
+import { LanguageCode as LanguageCodeDB } from '../database/db.enums';
 import { MenuItemService } from './menu-item.service';
 import {
   ChangeMenuItemPositionDto,
@@ -9,47 +10,74 @@ import {
   UpdateMenuItemDto,
 } from './dto/_index';
 import { MenuItem } from './entities/menu-item.entity';
+import {
+  MENU_ITEM_SERVICE_NAME,
+  LanguageCode,
+  MenuItemServiceControllerMethods,
+} from './menu-item.pb';
 
+@MenuItemServiceControllerMethods()
 @Controller()
 export class MenuItemController {
   constructor(private readonly menuItemService: MenuItemService) {}
   protected readonly logger = new Logger(MenuItemController.name);
 
-  @MessagePattern('findMenuItemsByCategoryId')
-  findByLanguage(@Payload() categoryId: string): Promise<MenuItem[]> {
+  // @MessagePattern('findMenuItemsByCategoryId')
+  @GrpcMethod(MENU_ITEM_SERVICE_NAME, 'GetMenuItemsByCategoryId')
+  async getMenuItemsByCategoryId({
+    categoryId,
+  }: {
+    categoryId: string;
+  }): Promise<{ items: MenuItem[] }> {
     this.logger.log('Received findMenuItemsByCategoryId request');
-    return this.menuItemService.findAllByCategoryId(categoryId);
+    const items =
+      await this.menuItemService.getMenuItemsByCategoryId(categoryId);
+    return { items };
   }
 
-  @MessagePattern('findMenuItemById')
-  findById(@Payload() id: string): Promise<MenuItem> {
+  // @MessagePattern('findMenuItemById')
+  @GrpcMethod(MENU_ITEM_SERVICE_NAME, 'GetMenuItemById')
+  async getMenuItemById({ id }: { id: string }): Promise<MenuItem> {
     this.logger.log('Received findMenuItemById request');
-    return this.menuItemService.findById(id);
+    return await this.menuItemService.findById(id);
   }
 
-  @MessagePattern('createMenuItem')
-  create(@Payload() createMenuItemDto: CreateMenuItemDto): Promise<MenuItem> {
+  // @MessagePattern('createMenuItem')
+  @GrpcMethod(MENU_ITEM_SERVICE_NAME, 'CreateMenuItem')
+  async createMenuItem(
+    createMenuItemDto: CreateMenuItemDto,
+  ): Promise<MenuItem> {
     this.logger.log('Received createMenuItem request');
-    return this.menuItemService.create(createMenuItemDto);
+    return await this.menuItemService.create({
+      ...createMenuItemDto,
+      language: LanguageCode[
+        createMenuItemDto.language
+      ] as unknown as LanguageCodeDB,
+    });
   }
 
-  @MessagePattern('updateMenuItem')
-  update(@Payload() updateMenuItemDto: UpdateMenuItemDto): Promise<MenuItem> {
+  // @MessagePattern('updateMenuItem')
+  @GrpcMethod(MENU_ITEM_SERVICE_NAME, 'UpdateMenuItem')
+  async updateMenuItem(
+    updateMenuItemDto: UpdateMenuItemDto,
+  ): Promise<MenuItem> {
     this.logger.log('Received updateMenuItem request');
-    return this.menuItemService.update(updateMenuItemDto);
+    return await this.menuItemService.update(updateMenuItemDto);
   }
 
-  @MessagePattern('changeMenuItemPosition')
-  changePosition(
-    @Payload() changeMenuItemPositionDto: ChangeMenuItemPositionDto,
+  // @MessagePattern('changeMenuItemPosition')
+  @GrpcMethod(MENU_ITEM_SERVICE_NAME, 'ChangeMenuItemPosition')
+  async changeMenuItemPosition(
+    changeMenuItemPositionDto: ChangeMenuItemPositionDto,
   ): Promise<MenuItem> {
     this.logger.log('Received changeMenuItemPosition request');
-    return this.menuItemService.changePosition(changeMenuItemPositionDto);
+    return await this.menuItemService.changePosition(changeMenuItemPositionDto);
   }
 
-  @MessagePattern('removeMenuItem')
-  remove(@Payload() id: string): Promise<StatusResponseDto> {
+  // @MessagePattern('removeMenuItem')
+  @GrpcMethod(MENU_ITEM_SERVICE_NAME, 'DeleteMenuItem')
+  async deleteMenuItem({ id }: { id: string }): Promise<StatusResponseDto> {
     this.logger.log('Received removeMenuItem request');
-    return this.menuItemService.remove(id);
+    return await this.menuItemService.remove(id);
   }
 }

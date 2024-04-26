@@ -18,7 +18,7 @@ export class MenuItemService {
     private readonly entityManager: EntityManager,
   ) {}
 
-  async findAllByCategoryId(categoryId: string): Promise<MenuItem[]> {
+  async getMenuItemsByCategoryId(categoryId: string): Promise<MenuItem[]> {
     try {
       return await this.menuItemRepository.find({
         where: { category: { id: categoryId } },

@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+package menuItem;
+
+message MenuItem {
+  string id = 1;
+  LanguageCode language = 2;
+  string title = 3;
+  string description = 4;
+  string price = 5;
+  bool hidden = 6;
+  int32 position = 7;
+  Id category = 8;
+}
+
+enum LanguageCode {
+    UA = 0;
+    EN = 1;
+}
+
+message MenuItems {
+  repeated MenuItem items = 1;
+}
+message MenuCategoryId {
+  string categoryId = 1;
+}
+message Id {
+  string id = 1;
+}
+message CreateMenuItemRequest {
+  LanguageCode language = 1;
+  string title = 2;
+  string description = 3;
+  string price = 4;
+  bool hidden = 5;
+  int32 position = 6;
+  string categoryId = 7;
+}
+message UpdateMenuItemRequest {
+  string id = 1;
+  LanguageCode language = 2;
+  string title = 3;
+  string description = 4;
+  string price = 5;
+  bool hidden = 6;
+  int32 position = 7;
+}
+message ChangeMenuItemPositionRequest {
+    string menuItemId = 1;
+    int32 oldPosition = 2;
+    int32 newPosition = 3;
+  }
+  message StatusResponse {
+    bool status = 1;
+    string message = 2;
+  }
+
+service MenuItemService {
+  rpc GetMenuItemsByCategoryId(MenuCategoryId) returns (MenuItems) {}
+  rpc GetMenuItemById(Id) returns (MenuItem) {}
+  rpc CreateMenuItem(CreateMenuItemRequest) returns (MenuItem) {}
+  rpc UpdateMenuItem(UpdateMenuItemRequest) returns (MenuItem) {}
+  rpc ChangeMenuItemPosition(ChangeMenuItemPositionRequest) returns (MenuItem) {}
+  rpc DeleteMenuItem(Id) returns (StatusResponse) {}
+}
+
+// protoc --plugin=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=./ --ts_proto_opt=nestJs=true ./proto/menu-item.proto
