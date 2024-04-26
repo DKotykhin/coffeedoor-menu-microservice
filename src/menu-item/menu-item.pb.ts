@@ -45,12 +45,11 @@ export interface CreateMenuItemRequest {
 
 export interface UpdateMenuItemRequest {
   id: string;
-  language: LanguageCode;
-  title: string;
-  description: string;
-  price: string;
-  hidden: boolean;
-  position: number;
+  title?: string | undefined;
+  description?: string | undefined;
+  price?: string | undefined;
+  hidden?: boolean | undefined;
+  position?: number | undefined;
 }
 
 export interface ChangeMenuItemPositionRequest {

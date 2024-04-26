@@ -23,11 +23,11 @@ export class CreateMenuCategoryDto {
 
   @IsOptional()
   @IsString()
-  image?: string;
+  image: string;
 
   @IsOptional()
   @IsBoolean()
-  hidden?: boolean;
+  hidden: boolean;
 
   @IsNumber()
   position: number;

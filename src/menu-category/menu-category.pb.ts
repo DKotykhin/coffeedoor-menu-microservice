@@ -58,12 +58,11 @@ export interface CreateMenuCategoryRequest {
 
 export interface UpdateMenuCategoryRequest {
   id: string;
-  language: LanguageCode;
-  title: string;
-  description: string;
-  image: string;
-  hidden: boolean;
-  position: number;
+  title?: string | undefined;
+  description?: string | undefined;
+  image?: string | undefined;
+  hidden?: boolean | undefined;
+  position?: number | undefined;
 }
 
 export interface ChangeMenuCategoryPositionRequest {

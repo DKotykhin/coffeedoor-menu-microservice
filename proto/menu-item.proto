@@ -38,12 +38,11 @@ message CreateMenuItemRequest {
 }
 message UpdateMenuItemRequest {
   string id = 1;
-  LanguageCode language = 2;
-  string title = 3;
-  string description = 4;
-  string price = 5;
-  bool hidden = 6;
-  int32 position = 7;
+  optional string title = 2;
+  optional string description = 3;
+  optional string price = 4;
+  optional bool hidden = 5;
+  optional int32 position = 6;
 }
 message ChangeMenuItemPositionRequest {
     string menuItemId = 1;
