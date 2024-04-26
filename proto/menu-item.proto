@@ -44,10 +44,10 @@ message ChangeMenuItemPositionRequest {
     int32 oldPosition = 2;
     int32 newPosition = 3;
   }
-  message StatusResponse {
-    bool status = 1;
-    string message = 2;
-  }
+message StatusResponse {
+  bool status = 1;
+  string message = 2;
+}
 
 service MenuItemService {
   rpc GetMenuItemsByCategoryId(MenuCategoryId) returns (MenuItems) {}

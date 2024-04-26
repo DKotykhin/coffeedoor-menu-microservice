@@ -1,7 +1,6 @@
 import { Controller, Logger } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
 
-import { StatusResponseDto } from '../types/status-response';
 import { MenuItemService } from './menu-item.service';
 import {
   ChangeMenuItemPositionDto,
@@ -12,6 +11,7 @@ import { MenuItem } from './entities/menu-item.entity';
 import {
   MENU_ITEM_SERVICE_NAME,
   MenuItemServiceControllerMethods,
+  StatusResponse,
 } from './menu-item.pb';
 
 @MenuItemServiceControllerMethods()
@@ -69,7 +69,7 @@ export class MenuItemController {
 
   // @MessagePattern('removeMenuItem')
   @GrpcMethod(MENU_ITEM_SERVICE_NAME, 'DeleteMenuItem')
-  async deleteMenuItem({ id }: { id: string }): Promise<StatusResponseDto> {
+  async deleteMenuItem({ id }: { id: string }): Promise<StatusResponse> {
     this.logger.log('Received removeMenuItem request');
     return await this.menuItemService.remove(id);
   }

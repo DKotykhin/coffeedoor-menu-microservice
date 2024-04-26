@@ -2,9 +2,9 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 
 import { MenuCategoryModule } from './menu-category/menu-category.module';
-import { validate } from './utils/env.validator';
 import { MenuItemModule } from './menu-item/menu-item.module';
 import { DatabaseModule } from './database/database.module';
+import { validate } from './utils/env.validator';
 
 @Module({
   imports: [

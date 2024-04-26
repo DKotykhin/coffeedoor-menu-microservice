@@ -1,7 +1,6 @@
 import { Controller, Logger } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
 
-import { StatusResponseDto } from '../types/status-response';
 import { LanguageCode } from '../database/db.enums';
 import { MenuCategoryService } from './menu-category.service';
 import {
@@ -13,6 +12,7 @@ import { MenuCategory } from './entities/menu-category.entity';
 import {
   MENU_CATEGORY_SERVICE_NAME,
   MenuCategoryServiceControllerMethods,
+  StatusResponse,
 } from './menu-category.pb';
 
 @MenuCategoryServiceControllerMethods()
@@ -80,7 +80,7 @@ export class MenuCategoryController {
 
   // @MessagePattern('removeMenuCategory')
   @GrpcMethod(MENU_CATEGORY_SERVICE_NAME, 'DeleteMenuCategory')
-  deleteMenuCategory({ id }: { id: string }): Promise<StatusResponseDto> {
+  deleteMenuCategory({ id }: { id: string }): Promise<StatusResponse> {
     this.logger.log('Received removeMenuCategory request');
     return this.menuCategoryService.remove(id);
   }

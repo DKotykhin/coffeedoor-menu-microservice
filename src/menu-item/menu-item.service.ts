@@ -2,13 +2,13 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, Repository } from 'typeorm';
 
-import { StatusResponseDto } from '../types/status-response';
 import {
   ChangeMenuItemPositionDto,
   CreateMenuItemDto,
   UpdateMenuItemDto,
 } from './dto/_index';
 import { MenuItem } from './entities/menu-item.entity';
+import { StatusResponse } from './menu-item.pb';
 
 @Injectable()
 export class MenuItemService {
@@ -98,7 +98,7 @@ export class MenuItemService {
     }
   }
 
-  async remove(id: string): Promise<StatusResponseDto> {
+  async remove(id: string): Promise<StatusResponse> {
     try {
       const result = await this.menuItemRepository.delete(id);
       if (result.affected === 0) {

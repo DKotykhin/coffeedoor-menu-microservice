@@ -2,7 +2,6 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, Repository } from 'typeorm';
 
-import { StatusResponseDto } from '../types/status-response';
 import { LanguageCode } from '../database/db.enums';
 import {
   ChangeMenuCategoryPositionDto,
@@ -10,6 +9,7 @@ import {
   UpdateMenuCategoryDto,
 } from './dto/_index';
 import { MenuCategory } from './entities/menu-category.entity';
+import { StatusResponse } from './menu-category.pb';
 
 @Injectable()
 export class MenuCategoryService {
@@ -123,7 +123,7 @@ export class MenuCategoryService {
     }
   }
 
-  async remove(id: string): Promise<StatusResponseDto> {
+  async remove(id: string): Promise<StatusResponse> {
     try {
       const result = await this.menuCategoryRepository.delete(id);
       if (result.affected === 0) {
