@@ -21,7 +21,6 @@ export class MenuCategoryController {
   constructor(private readonly menuCategoryService: MenuCategoryService) {}
   protected readonly logger = new Logger(MenuCategoryController.name);
 
-  // @MessagePattern('findMenuCategoriesByLanguage')
   @GrpcMethod(MENU_CATEGORY_SERVICE_NAME, 'GetMenuCategoriesByLanguage')
   async getMenuCategoriesByLanguage({
     language,
@@ -34,7 +33,6 @@ export class MenuCategoryController {
     return { menuCategories };
   }
 
-  // @MessagePattern('findAllMenuCategories')
   @GrpcMethod(MENU_CATEGORY_SERVICE_NAME, 'GetAllMenuCategories')
   async getAllMenuCategories() {
     this.logger.log('Received findAllMenuCategory request');
@@ -42,14 +40,12 @@ export class MenuCategoryController {
     return { menuCategories };
   }
 
-  // @MessagePattern('findMenuCategoryById')
   @GrpcMethod(MENU_CATEGORY_SERVICE_NAME, 'GetMenuCategoryById')
   getMenuCategoryById({ id }: { id: string }): Promise<MenuCategory> {
     this.logger.log('Received findMenuCategoryById request');
     return this.menuCategoryService.findById(id);
   }
 
-  // @MessagePattern('createMenuCategory')
   @GrpcMethod(MENU_CATEGORY_SERVICE_NAME, 'CreateMenuCategory')
   createMenuCategory(
     createMenuCategoryDto: CreateMenuCategoryDto,
@@ -58,7 +54,6 @@ export class MenuCategoryController {
     return this.menuCategoryService.create(createMenuCategoryDto);
   }
 
-  // @MessagePattern('updateMenuCategory')
   @GrpcMethod(MENU_CATEGORY_SERVICE_NAME, 'UpdateMenuCategory')
   updateMenuCategory(
     updateMenuCategoryDto: UpdateMenuCategoryDto,
@@ -67,7 +62,6 @@ export class MenuCategoryController {
     return this.menuCategoryService.update(updateMenuCategoryDto);
   }
 
-  // @MessagePattern('changeMenuCategoryPosition')
   @GrpcMethod(MENU_CATEGORY_SERVICE_NAME, 'ChangeMenuCategoryPosition')
   changeMenuCategoryPosition(
     changeMenuCategoryPositionDto: ChangeMenuCategoryPositionDto,
@@ -78,7 +72,6 @@ export class MenuCategoryController {
     );
   }
 
-  // @MessagePattern('removeMenuCategory')
   @GrpcMethod(MENU_CATEGORY_SERVICE_NAME, 'DeleteMenuCategory')
   deleteMenuCategory({ id }: { id: string }): Promise<StatusResponse> {
     this.logger.log('Received removeMenuCategory request');

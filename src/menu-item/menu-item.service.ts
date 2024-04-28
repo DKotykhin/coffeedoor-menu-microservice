@@ -1,7 +1,8 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, Repository } from 'typeorm';
 
+import { ErrorImplementation } from '../utils/error-implementation';
 import {
   ChangeMenuItemPositionDto,
   CreateMenuItemDto,
@@ -27,7 +28,7 @@ export class MenuItemService {
         },
       });
     } catch (error) {
-      throw new HttpException(error.message, HttpStatus.NOT_FOUND);
+      throw ErrorImplementation.notFound('Menu items not found');
     }
   }
 
@@ -37,7 +38,7 @@ export class MenuItemService {
         where: { id },
       });
     } catch (error) {
-      throw new HttpException(error.message, HttpStatus.NOT_FOUND);
+      throw ErrorImplementation.notFound('Menu item not found');
     }
   }
 
@@ -48,7 +49,7 @@ export class MenuItemService {
         category: { id: createMenuItemDto.categoryId },
       });
     } catch (error) {
-      throw new HttpException(error.message, HttpStatus.FORBIDDEN);
+      throw ErrorImplementation.forbidden('Menu item not created');
     }
   }
 
@@ -58,7 +59,7 @@ export class MenuItemService {
         ...updateMenuItemDto,
       });
     } catch (error) {
-      throw new HttpException(error.message, HttpStatus.NOT_FOUND);
+      throw ErrorImplementation.forbidden('Menu item not updated');
     }
   }
 
@@ -94,7 +95,7 @@ export class MenuItemService {
 
       return updatedMenuItem;
     } catch (error) {
-      throw new HttpException(error.message, HttpStatus.NOT_FOUND);
+      throw ErrorImplementation.forbidden('Menu item position not updated');
     }
   }
 
@@ -102,14 +103,14 @@ export class MenuItemService {
     try {
       const result = await this.menuItemRepository.delete(id);
       if (result.affected === 0) {
-        throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+        throw ErrorImplementation.notFound('Menu item not found');
       }
       return {
         status: true,
         message: `Menu item ${id} successfully deleted`,
       };
     } catch (error) {
-      throw new HttpException(error.message, HttpStatus.NOT_FOUND);
+      throw ErrorImplementation.forbidden('Menu item not deleted');
     }
   }
 }

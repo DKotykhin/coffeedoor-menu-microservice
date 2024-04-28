@@ -1,8 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, Repository } from 'typeorm';
 
 import { LanguageCode } from '../database/db.enums';
+import { ErrorImplementation } from '../utils/error-implementation';
 import {
   ChangeMenuCategoryPositionDto,
   CreateMenuCategoryDto,
@@ -35,7 +36,7 @@ export class MenuCategoryService {
         },
       });
     } catch (error) {
-      throw new HttpException(error.message, HttpStatus.NOT_FOUND);
+      throw ErrorImplementation.forbidden(error.message);
     }
   }
 
@@ -51,7 +52,7 @@ export class MenuCategoryService {
         },
       });
     } catch (error) {
-      throw new HttpException(error.message, HttpStatus.NOT_FOUND);
+      throw ErrorImplementation.forbidden(error.message);
     }
   }
 
@@ -63,7 +64,7 @@ export class MenuCategoryService {
         relations: ['menuItems'],
       });
     } catch (error) {
-      throw new HttpException(error.message, HttpStatus.NOT_FOUND);
+      throw ErrorImplementation.notFound('Menu category not found');
     }
   }
 
@@ -74,20 +75,19 @@ export class MenuCategoryService {
     try {
       return await this.entityManager.save('MenuCategory', menuCategory);
     } catch (error) {
-      throw new HttpException(error.message, HttpStatus.FORBIDDEN);
+      throw ErrorImplementation.forbidden("Couldn't create menu category");
     }
   }
 
   async update(
     updateMenuCategoryDto: UpdateMenuCategoryDto,
   ): Promise<MenuCategory> {
-    // return await this.menuCategoryRepository.update(id, updateMenuCategoryDto);
     try {
       const menuCategory = await this.findById(updateMenuCategoryDto.id);
       Object.assign(menuCategory, updateMenuCategoryDto);
       return await this.entityManager.save('MenuCategory', menuCategory);
     } catch (error) {
-      throw new HttpException(error.message, HttpStatus.NOT_FOUND);
+      throw ErrorImplementation.forbidden("Couldn't update menu category");
     }
   }
 
@@ -119,7 +119,9 @@ export class MenuCategoryService {
         .execute();
       return updatedMenuCategory;
     } catch (error) {
-      throw new HttpException(error.message, HttpStatus.NOT_FOUND);
+      throw ErrorImplementation.forbidden(
+        "Couldn't change menu category position",
+      );
     }
   }
 
@@ -127,14 +129,14 @@ export class MenuCategoryService {
     try {
       const result = await this.menuCategoryRepository.delete(id);
       if (result.affected === 0) {
-        throw new HttpException('Not found', HttpStatus.NOT_FOUND);
+        throw ErrorImplementation.notFound('Menu category not found');
       }
       return {
         status: true,
         message: `Menu category ${id} successfully deleted`,
       };
     } catch (error) {
-      throw new HttpException(error.message, HttpStatus.NOT_FOUND);
+      throw ErrorImplementation.forbidden("Couldn't delete menu category");
     }
   }
 }
