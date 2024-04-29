@@ -3,16 +3,14 @@ import { GrpcMethod } from '@nestjs/microservices';
 
 import { LanguageCode } from '../database/db.enums';
 import { MenuCategoryService } from './menu-category.service';
-import {
-  ChangeMenuCategoryPositionDto,
-  CreateMenuCategoryDto,
-  UpdateMenuCategoryDto,
-} from './dto/_index';
 import { MenuCategory } from './entities/menu-category.entity';
 import {
+  ChangeMenuCategoryPositionRequest,
+  CreateMenuCategoryRequest,
   MENU_CATEGORY_SERVICE_NAME,
   MenuCategoryServiceControllerMethods,
   StatusResponse,
+  UpdateMenuCategoryRequest,
 } from './menu-category.pb';
 
 @MenuCategoryServiceControllerMethods()
@@ -48,7 +46,7 @@ export class MenuCategoryController {
 
   @GrpcMethod(MENU_CATEGORY_SERVICE_NAME, 'CreateMenuCategory')
   createMenuCategory(
-    createMenuCategoryDto: CreateMenuCategoryDto,
+    createMenuCategoryDto: CreateMenuCategoryRequest,
   ): Promise<MenuCategory> {
     this.logger.log('Received createMenuCategory request');
     return this.menuCategoryService.create(createMenuCategoryDto);
@@ -56,7 +54,7 @@ export class MenuCategoryController {
 
   @GrpcMethod(MENU_CATEGORY_SERVICE_NAME, 'UpdateMenuCategory')
   updateMenuCategory(
-    updateMenuCategoryDto: UpdateMenuCategoryDto,
+    updateMenuCategoryDto: UpdateMenuCategoryRequest,
   ): Promise<MenuCategory> {
     this.logger.log('Received updateMenuCategory request');
     return this.menuCategoryService.update(updateMenuCategoryDto);
@@ -64,7 +62,7 @@ export class MenuCategoryController {
 
   @GrpcMethod(MENU_CATEGORY_SERVICE_NAME, 'ChangeMenuCategoryPosition')
   changeMenuCategoryPosition(
-    changeMenuCategoryPositionDto: ChangeMenuCategoryPositionDto,
+    changeMenuCategoryPositionDto: ChangeMenuCategoryPositionRequest,
   ): Promise<MenuCategory> {
     this.logger.log('Received changeMenuCategoryPosition request');
     return this.menuCategoryService.changePosition(

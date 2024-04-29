@@ -4,13 +4,13 @@ import { EntityManager, Repository } from 'typeorm';
 
 import { LanguageCode } from '../database/db.enums';
 import { ErrorImplementation } from '../utils/error-implementation';
-import {
-  ChangeMenuCategoryPositionDto,
-  CreateMenuCategoryDto,
-  UpdateMenuCategoryDto,
-} from './dto/_index';
 import { MenuCategory } from './entities/menu-category.entity';
-import { StatusResponse } from './menu-category.pb';
+import {
+  ChangeMenuCategoryPositionRequest,
+  CreateMenuCategoryRequest,
+  StatusResponse,
+  UpdateMenuCategoryRequest,
+} from './menu-category.pb';
 
 @Injectable()
 export class MenuCategoryService {
@@ -69,9 +69,12 @@ export class MenuCategoryService {
   }
 
   async create(
-    createMenuCategoryDto: CreateMenuCategoryDto,
+    createMenuCategoryDto: CreateMenuCategoryRequest,
   ): Promise<MenuCategory> {
-    const menuCategory = new MenuCategory(createMenuCategoryDto);
+    const menuCategory = new MenuCategory({
+      ...createMenuCategoryDto,
+      language: createMenuCategoryDto.language as LanguageCode,
+    });
     try {
       return await this.entityManager.save('MenuCategory', menuCategory);
     } catch (error) {
@@ -80,7 +83,7 @@ export class MenuCategoryService {
   }
 
   async update(
-    updateMenuCategoryDto: UpdateMenuCategoryDto,
+    updateMenuCategoryDto: UpdateMenuCategoryRequest,
   ): Promise<MenuCategory> {
     try {
       const menuCategory = await this.findById(updateMenuCategoryDto.id);
@@ -92,7 +95,7 @@ export class MenuCategoryService {
   }
 
   async changePosition(
-    changeMenuCategoryPosition: ChangeMenuCategoryPositionDto,
+    changeMenuCategoryPosition: ChangeMenuCategoryPositionRequest,
   ): Promise<MenuCategory> {
     try {
       const { menuCategoryId, oldPosition, newPosition } =

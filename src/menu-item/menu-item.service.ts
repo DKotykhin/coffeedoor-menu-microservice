@@ -2,14 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, Repository } from 'typeorm';
 
+import { LanguageCode } from '../database/db.enums';
 import { ErrorImplementation } from '../utils/error-implementation';
-import {
-  ChangeMenuItemPositionDto,
-  CreateMenuItemDto,
-  UpdateMenuItemDto,
-} from './dto/_index';
 import { MenuItem } from './entities/menu-item.entity';
-import { StatusResponse } from './menu-item.pb';
+import {
+  ChangeMenuItemPositionRequest,
+  CreateMenuItemRequest,
+  StatusResponse,
+  UpdateMenuItemRequest,
+} from './menu-item.pb';
 
 @Injectable()
 export class MenuItemService {
@@ -42,10 +43,11 @@ export class MenuItemService {
     }
   }
 
-  async create(createMenuItemDto: CreateMenuItemDto): Promise<MenuItem> {
+  async create(createMenuItemDto: CreateMenuItemRequest): Promise<MenuItem> {
     try {
       return await this.entityManager.save(MenuItem, {
         ...createMenuItemDto,
+        language: createMenuItemDto.language as LanguageCode,
         category: { id: createMenuItemDto.categoryId },
       });
     } catch (error) {
@@ -53,7 +55,7 @@ export class MenuItemService {
     }
   }
 
-  async update(updateMenuItemDto: UpdateMenuItemDto): Promise<MenuItem> {
+  async update(updateMenuItemDto: UpdateMenuItemRequest): Promise<MenuItem> {
     try {
       return await this.entityManager.save(MenuItem, {
         ...updateMenuItemDto,
@@ -64,7 +66,7 @@ export class MenuItemService {
   }
 
   async changePosition(
-    changeMenuItemPosition: ChangeMenuItemPositionDto,
+    changeMenuItemPosition: ChangeMenuItemPositionRequest,
   ): Promise<MenuItem> {
     try {
       const { menuItemId, oldPosition, newPosition } = changeMenuItemPosition;

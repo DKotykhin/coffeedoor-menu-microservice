@@ -2,16 +2,14 @@ import { Controller, Logger } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
 
 import { MenuItemService } from './menu-item.service';
-import {
-  ChangeMenuItemPositionDto,
-  CreateMenuItemDto,
-  UpdateMenuItemDto,
-} from './dto/_index';
 import { MenuItem } from './entities/menu-item.entity';
 import {
+  ChangeMenuItemPositionRequest,
+  CreateMenuItemRequest,
   MENU_ITEM_SERVICE_NAME,
   MenuItemServiceControllerMethods,
   StatusResponse,
+  UpdateMenuItemRequest,
 } from './menu-item.pb';
 
 @MenuItemServiceControllerMethods()
@@ -43,7 +41,7 @@ export class MenuItemController {
   // @MessagePattern('createMenuItem')
   @GrpcMethod(MENU_ITEM_SERVICE_NAME, 'CreateMenuItem')
   async createMenuItem(
-    createMenuItemDto: CreateMenuItemDto,
+    createMenuItemDto: CreateMenuItemRequest,
   ): Promise<MenuItem> {
     this.logger.log('Received createMenuItem request');
     return await this.menuItemService.create(createMenuItemDto);
@@ -52,7 +50,7 @@ export class MenuItemController {
   // @MessagePattern('updateMenuItem')
   @GrpcMethod(MENU_ITEM_SERVICE_NAME, 'UpdateMenuItem')
   async updateMenuItem(
-    updateMenuItemDto: UpdateMenuItemDto,
+    updateMenuItemDto: UpdateMenuItemRequest,
   ): Promise<MenuItem> {
     this.logger.log('Received updateMenuItem request');
     return await this.menuItemService.update(updateMenuItemDto);
@@ -61,7 +59,7 @@ export class MenuItemController {
   // @MessagePattern('changeMenuItemPosition')
   @GrpcMethod(MENU_ITEM_SERVICE_NAME, 'ChangeMenuItemPosition')
   async changeMenuItemPosition(
-    changeMenuItemPositionDto: ChangeMenuItemPositionDto,
+    changeMenuItemPositionDto: ChangeMenuItemPositionRequest,
   ): Promise<MenuItem> {
     this.logger.log('Received changeMenuItemPosition request');
     return await this.menuItemService.changePosition(changeMenuItemPositionDto);
