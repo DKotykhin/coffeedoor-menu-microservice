@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, Repository } from 'typeorm';
 
@@ -19,6 +19,7 @@ export class MenuCategoryService {
     private readonly menuCategoryRepository: Repository<MenuCategory>,
     private readonly entityManager: EntityManager,
   ) {}
+  protected readonly logger = new Logger(MenuCategoryService.name);
 
   async findByLanguage(language: LanguageCode): Promise<MenuCategory[]> {
     try {
@@ -36,6 +37,7 @@ export class MenuCategoryService {
         },
       });
     } catch (error) {
+      this.logger.error(error?.message);
       throw ErrorImplementation.forbidden(error.message);
     }
   }
@@ -52,6 +54,7 @@ export class MenuCategoryService {
         },
       });
     } catch (error) {
+      this.logger.error(error?.message);
       throw ErrorImplementation.forbidden(error.message);
     }
   }
@@ -64,6 +67,7 @@ export class MenuCategoryService {
         relations: ['menuItems'],
       });
     } catch (error) {
+      this.logger.error(error?.message);
       throw ErrorImplementation.notFound('Menu category not found');
     }
   }
@@ -78,6 +82,7 @@ export class MenuCategoryService {
     try {
       return await this.entityManager.save('MenuCategory', menuCategory);
     } catch (error) {
+      this.logger.error(error?.message);
       throw ErrorImplementation.forbidden("Couldn't create menu category");
     }
   }
@@ -90,6 +95,7 @@ export class MenuCategoryService {
       Object.assign(menuCategory, updateMenuCategoryDto);
       return await this.entityManager.save('MenuCategory', menuCategory);
     } catch (error) {
+      this.logger.error(error?.message);
       throw ErrorImplementation.forbidden("Couldn't update menu category");
     }
   }
@@ -122,6 +128,7 @@ export class MenuCategoryService {
         .execute();
       return updatedMenuCategory;
     } catch (error) {
+      this.logger.error(error?.message);
       throw ErrorImplementation.forbidden(
         "Couldn't change menu category position",
       );
@@ -139,6 +146,7 @@ export class MenuCategoryService {
         message: `Menu category ${id} successfully deleted`,
       };
     } catch (error) {
+      this.logger.error(error?.message);
       throw ErrorImplementation.forbidden("Couldn't delete menu category");
     }
   }

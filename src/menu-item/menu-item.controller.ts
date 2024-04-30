@@ -18,7 +18,6 @@ export class MenuItemController {
   constructor(private readonly menuItemService: MenuItemService) {}
   protected readonly logger = new Logger(MenuItemController.name);
 
-  // @MessagePattern('findMenuItemsByCategoryId')
   @GrpcMethod(MENU_ITEM_SERVICE_NAME, 'GetMenuItemsByCategoryId')
   async getMenuItemsByCategoryId({
     categoryId,
@@ -31,14 +30,12 @@ export class MenuItemController {
     return { items };
   }
 
-  // @MessagePattern('findMenuItemById')
   @GrpcMethod(MENU_ITEM_SERVICE_NAME, 'GetMenuItemById')
   async getMenuItemById({ id }: { id: string }): Promise<MenuItem> {
     this.logger.log('Received findMenuItemById request');
     return await this.menuItemService.findById(id);
   }
 
-  // @MessagePattern('createMenuItem')
   @GrpcMethod(MENU_ITEM_SERVICE_NAME, 'CreateMenuItem')
   async createMenuItem(
     createMenuItemDto: CreateMenuItemRequest,
@@ -47,7 +44,6 @@ export class MenuItemController {
     return await this.menuItemService.create(createMenuItemDto);
   }
 
-  // @MessagePattern('updateMenuItem')
   @GrpcMethod(MENU_ITEM_SERVICE_NAME, 'UpdateMenuItem')
   async updateMenuItem(
     updateMenuItemDto: UpdateMenuItemRequest,
@@ -56,7 +52,6 @@ export class MenuItemController {
     return await this.menuItemService.update(updateMenuItemDto);
   }
 
-  // @MessagePattern('changeMenuItemPosition')
   @GrpcMethod(MENU_ITEM_SERVICE_NAME, 'ChangeMenuItemPosition')
   async changeMenuItemPosition(
     changeMenuItemPositionDto: ChangeMenuItemPositionRequest,
@@ -65,7 +60,6 @@ export class MenuItemController {
     return await this.menuItemService.changePosition(changeMenuItemPositionDto);
   }
 
-  // @MessagePattern('removeMenuItem')
   @GrpcMethod(MENU_ITEM_SERVICE_NAME, 'DeleteMenuItem')
   async deleteMenuItem({ id }: { id: string }): Promise<StatusResponse> {
     this.logger.log('Received removeMenuItem request');

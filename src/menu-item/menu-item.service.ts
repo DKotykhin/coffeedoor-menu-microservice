@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { EntityManager, Repository } from 'typeorm';
 
@@ -19,6 +19,7 @@ export class MenuItemService {
     private readonly menuItemRepository: Repository<MenuItem>,
     private readonly entityManager: EntityManager,
   ) {}
+  protected readonly logger = new Logger(MenuItemService.name);
 
   async getMenuItemsByCategoryId(categoryId: string): Promise<MenuItem[]> {
     try {
@@ -29,6 +30,7 @@ export class MenuItemService {
         },
       });
     } catch (error) {
+      this.logger.error(error?.message);
       throw ErrorImplementation.notFound('Menu items not found');
     }
   }
@@ -39,6 +41,7 @@ export class MenuItemService {
         where: { id },
       });
     } catch (error) {
+      this.logger.error(error?.message);
       throw ErrorImplementation.notFound('Menu item not found');
     }
   }
@@ -51,6 +54,7 @@ export class MenuItemService {
         category: { id: createMenuItemDto.categoryId },
       });
     } catch (error) {
+      this.logger.error(error?.message);
       throw ErrorImplementation.forbidden('Menu item not created');
     }
   }
@@ -61,6 +65,7 @@ export class MenuItemService {
         ...updateMenuItemDto,
       });
     } catch (error) {
+      this.logger.error(error?.message);
       throw ErrorImplementation.forbidden('Menu item not updated');
     }
   }
@@ -97,6 +102,7 @@ export class MenuItemService {
 
       return updatedMenuItem;
     } catch (error) {
+      this.logger.error(error?.message);
       throw ErrorImplementation.forbidden('Menu item position not updated');
     }
   }
@@ -112,6 +118,7 @@ export class MenuItemService {
         message: `Menu item ${id} successfully deleted`,
       };
     } catch (error) {
+      this.logger.error(error?.message);
       throw ErrorImplementation.forbidden('Menu item not deleted');
     }
   }
