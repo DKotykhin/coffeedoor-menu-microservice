@@ -62,13 +62,17 @@ export class MenuCategoryService {
   async findById(id: string): Promise<MenuCategory> {
     // return await this.entityManager.findOne('MenuCategory', { where: { id } });
     try {
-      return await this.menuCategoryRepository.findOne({
+      const menuCategory = await this.menuCategoryRepository.findOne({
         where: { id },
         relations: ['menuItems'],
       });
+      if (!menuCategory) {
+        throw ErrorImplementation.notFound('Menu category not found');
+      }
+      return menuCategory;
     } catch (error) {
       this.logger.error(error?.message);
-      throw ErrorImplementation.notFound('Menu category not found');
+      throw ErrorImplementation.notFound(error?.message);
     }
   }
 
@@ -92,11 +96,14 @@ export class MenuCategoryService {
   ): Promise<MenuCategory> {
     try {
       const menuCategory = await this.findById(updateMenuCategoryDto.id);
+      if (!menuCategory) {
+        throw ErrorImplementation.notFound('Menu category not found');
+      }
       Object.assign(menuCategory, updateMenuCategoryDto);
       return await this.entityManager.save('MenuCategory', menuCategory);
     } catch (error) {
       this.logger.error(error?.message);
-      throw ErrorImplementation.forbidden("Couldn't update menu category");
+      throw ErrorImplementation.forbidden(error?.message);
     }
   }
 
@@ -147,7 +154,7 @@ export class MenuCategoryService {
       };
     } catch (error) {
       this.logger.error(error?.message);
-      throw ErrorImplementation.forbidden("Couldn't delete menu category");
+      throw ErrorImplementation.forbidden(error?.message);
     }
   }
 }

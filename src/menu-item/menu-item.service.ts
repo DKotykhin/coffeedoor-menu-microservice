@@ -37,12 +37,16 @@ export class MenuItemService {
 
   async findById(id: string): Promise<MenuItem> {
     try {
-      return await this.menuItemRepository.findOne({
+      const menuItem = await this.menuItemRepository.findOne({
         where: { id },
       });
+      if (!menuItem) {
+        throw ErrorImplementation.notFound('Menu item not found');
+      }
+      return menuItem;
     } catch (error) {
       this.logger.error(error?.message);
-      throw ErrorImplementation.notFound('Menu item not found');
+      throw ErrorImplementation.notFound(error?.message);
     }
   }
 
@@ -61,12 +65,18 @@ export class MenuItemService {
 
   async update(updateMenuItemDto: UpdateMenuItemRequest): Promise<MenuItem> {
     try {
+      const menuItemToUpdate = await this.menuItemRepository.findOne({
+        where: { id: updateMenuItemDto.id },
+      });
+      if (!menuItemToUpdate) {
+        throw ErrorImplementation.notFound('Menu item not found');
+      }
       return await this.entityManager.save(MenuItem, {
         ...updateMenuItemDto,
       });
     } catch (error) {
       this.logger.error(error?.message);
-      throw ErrorImplementation.forbidden('Menu item not updated');
+      throw ErrorImplementation.forbidden(error?.message);
     }
   }
 
@@ -119,7 +129,7 @@ export class MenuItemService {
       };
     } catch (error) {
       this.logger.error(error?.message);
-      throw ErrorImplementation.forbidden('Menu item not deleted');
+      throw ErrorImplementation.forbidden(error?.message);
     }
   }
 }

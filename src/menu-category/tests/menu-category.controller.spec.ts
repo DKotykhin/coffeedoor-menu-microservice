@@ -4,8 +4,10 @@ import { MenuCategoryController } from '../menu-category.controller';
 import { MenuCategoryService } from '../menu-category.service';
 import { LanguageCode } from '../../database/db.enums';
 import { MenuCategory } from '../entities/menu-category.entity';
-import { ChangeMenuCategoryPositionDto } from '../dto/change-menu-category-position.dto';
-import { CreateMenuCategoryDto } from '../dto/create-menu-category.dto';
+import {
+  ChangeMenuCategoryPositionRequest,
+  CreateMenuCategoryRequest,
+} from '../menu-category.pb';
 
 const mockMenuCategory: MenuCategory = {
   id: '48670bd2-6392-42b6-9ef1-1d5867a175cf',
@@ -30,13 +32,13 @@ const mockMenuCategoryService = {
   findById: jest.fn((id: string) => {
     return { id, ...mockMenuCategory };
   }),
-  create: jest.fn((dto: CreateMenuCategoryDto) => {
+  create: jest.fn((dto: CreateMenuCategoryRequest) => {
     return { id: 'new-id', ...dto };
   }),
   update: jest.fn((id: string, dto: MenuCategory) => {
     return { id, ...dto };
   }),
-  changePosition: jest.fn((dto: ChangeMenuCategoryPositionDto) => {
+  changePosition: jest.fn((dto: ChangeMenuCategoryPositionRequest) => {
     return {
       ...mockMenuCategory,
       position: dto.newPosition,
