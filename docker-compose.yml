@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   app:
     container_name: menu_microservice
@@ -12,6 +10,7 @@ services:
       - .env.stage.docker
 
   menu_postgres_db:
+    container_name: postgres-menu_db
     image: postgres:latest
     restart: always
     ports:
@@ -22,6 +21,7 @@ services:
       - pg_data:/var/lib/postgresql/data
 
   adminer:
+    container_name: adminer-menu_db
     image: adminer
     restart: always
     ports:
