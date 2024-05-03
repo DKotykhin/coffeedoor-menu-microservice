@@ -42,7 +42,7 @@ const mockMenuCategoryService = {
     return {
       ...mockMenuCategory,
       position: dto.newPosition,
-      id: dto.menuCategoryId,
+      id: dto.id,
     };
   }),
   remove: jest.fn(() => {

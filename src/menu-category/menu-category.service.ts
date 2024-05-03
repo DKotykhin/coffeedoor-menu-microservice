@@ -111,10 +111,9 @@ export class MenuCategoryService {
     changeMenuCategoryPosition: ChangeMenuCategoryPositionRequest,
   ): Promise<MenuCategory> {
     try {
-      const { menuCategoryId, oldPosition, newPosition } =
-        changeMenuCategoryPosition;
+      const { id, oldPosition, newPosition } = changeMenuCategoryPosition;
       const menuCategory = await this.menuCategoryRepository.findOneOrFail({
-        where: { id: menuCategoryId },
+        where: { id },
       });
       const updatedMenuCategory = await this.menuCategoryRepository.save({
         ...menuCategory,
@@ -126,7 +125,7 @@ export class MenuCategoryService {
         .set({
           position: () => `position ${oldPosition < newPosition ? '-' : '+'} 1`,
         })
-        .where('id != :id', { id: menuCategoryId })
+        .where('id != :id', { id })
         .andWhere('language = :language', { language: menuCategory.language })
         .andWhere('position BETWEEN :minPosition AND :maxPosition', {
           minPosition: Math.min(oldPosition, newPosition),

@@ -21,10 +21,10 @@ export class MenuItemService {
   ) {}
   protected readonly logger = new Logger(MenuItemService.name);
 
-  async getMenuItemsByCategoryId(categoryId: string): Promise<MenuItem[]> {
+  async getMenuItemsByCategoryId(id: string): Promise<any> {
     try {
       return await this.menuItemRepository.find({
-        where: { category: { id: categoryId } },
+        where: { menuCategory: { id } },
         order: {
           position: 'ASC',
         },
@@ -39,6 +39,7 @@ export class MenuItemService {
     try {
       const menuItem = await this.menuItemRepository.findOne({
         where: { id },
+        relations: ['menuCategory'],
       });
       if (!menuItem) {
         throw ErrorImplementation.notFound('Menu item not found');
@@ -55,7 +56,6 @@ export class MenuItemService {
       return await this.entityManager.save(MenuItem, {
         ...createMenuItemDto,
         language: createMenuItemDto.language as LanguageCode,
-        category: { id: createMenuItemDto.categoryId },
       });
     } catch (error) {
       this.logger.error(error?.message);
@@ -84,26 +84,28 @@ export class MenuItemService {
     changeMenuItemPosition: ChangeMenuItemPositionRequest,
   ): Promise<MenuItem> {
     try {
-      const { menuItemId, oldPosition, newPosition } = changeMenuItemPosition;
+      const { id, oldPosition, newPosition } = changeMenuItemPosition;
       const menuItem = await this.menuItemRepository.findOneOrFail({
-        where: { id: menuItemId },
-        relations: ['category'],
+        where: { id },
+        relations: ['menuCategory'],
       });
       const updatedMenuItem = await this.menuItemRepository.save({
         ...menuItem,
         position: newPosition,
       });
 
-      const { language, category } = menuItem;
+      const { language, menuCategory } = menuItem;
       await this.menuItemRepository
         .createQueryBuilder()
         .update(MenuItem)
         .set({
           position: () => `position ${oldPosition < newPosition ? '-' : '+'} 1`,
         })
-        .where('id != :id', { id: menuItemId })
+        .where('id != :id', { id })
         .andWhere('language = :language', { language })
-        .andWhere('categoryId = :categoryId', { categoryId: category.id })
+        .andWhere('menuCategoryId = :menuCategoryId', {
+          menuCategoryId: menuCategory.id,
+        })
         .andWhere('position BETWEEN :minPosition AND :maxPosition', {
           minPosition: Math.min(oldPosition, newPosition),
           maxPosition: Math.max(oldPosition, newPosition),

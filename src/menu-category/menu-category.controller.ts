@@ -24,18 +24,18 @@ export class MenuCategoryController {
     language,
   }: {
     language: LanguageCode;
-  }): Promise<{ menuCategories: MenuCategory[] }> {
+  }): Promise<{ menuCategoryList: MenuCategory[] }> {
     this.logger.log('Received findMenuCategoryByLanguage request');
-    const menuCategories =
+    const menuCategoryList =
       await this.menuCategoryService.findByLanguage(language);
-    return { menuCategories };
+    return { menuCategoryList };
   }
 
   @GrpcMethod(MENU_CATEGORY_SERVICE_NAME, 'GetAllMenuCategories')
   async getAllMenuCategories() {
     this.logger.log('Received findAllMenuCategory request');
-    const menuCategories = await this.menuCategoryService.findAll();
-    return { menuCategories };
+    const menuCategoryList = await this.menuCategoryService.findAll();
+    return { menuCategoryList };
   }
 
   @GrpcMethod(MENU_CATEGORY_SERVICE_NAME, 'GetMenuCategoryById')

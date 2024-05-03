@@ -28,7 +28,7 @@ export class MenuItem extends BaseEntity {
     onDelete: 'CASCADE',
     nullable: false,
   })
-  category: MenuCategory;
+  menuCategory: MenuCategory;
 
   constructor(partial: Partial<MenuItem>) {
     super(partial);

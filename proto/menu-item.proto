@@ -10,14 +10,11 @@ message MenuItem {
   string price = 5;
   bool hidden = 6;
   int32 position = 7;
-  Id category = 8;
+  Id menuCategory = 8;
 }
 
-message MenuItems {
-  repeated MenuItem items = 1;
-}
-message MenuCategoryId {
-  string categoryId = 1;
+message MenuItemList {
+  repeated MenuItem menuItemList = 1;
 }
 message Id {
   string id = 1;
@@ -29,7 +26,7 @@ message CreateMenuItemRequest {
   string price = 4;
   bool hidden = 5;
   int32 position = 6;
-  string categoryId = 7;
+  Id menuCategory = 7;
 }
 message UpdateMenuItemRequest {
   string id = 1;
@@ -40,7 +37,7 @@ message UpdateMenuItemRequest {
   optional int32 position = 6;
 }
 message ChangeMenuItemPositionRequest {
-    string menuItemId = 1;
+    string id = 1;
     int32 oldPosition = 2;
     int32 newPosition = 3;
   }
@@ -50,7 +47,7 @@ message StatusResponse {
 }
 
 service MenuItemService {
-  rpc GetMenuItemsByCategoryId(MenuCategoryId) returns (MenuItems) {}
+  rpc GetMenuItemsByCategoryId(Id) returns (MenuItemList) {}
   rpc GetMenuItemById(Id) returns (MenuItem) {}
   rpc CreateMenuItem(CreateMenuItemRequest) returns (MenuItem) {}
   rpc UpdateMenuItem(UpdateMenuItemRequest) returns (MenuItem) {}

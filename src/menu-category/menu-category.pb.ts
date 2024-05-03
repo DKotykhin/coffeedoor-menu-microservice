@@ -26,18 +26,17 @@ export interface MenuItem {
   price: string;
   hidden: boolean;
   position: number;
-  category: string;
 }
 
-export interface MenuCategories {
-  menuCategories: MenuCategory[];
+export interface MenuCategoryList {
+  menuCategoryList: MenuCategory[];
 }
 
-export interface MenuCategoryLanguage {
+export interface Language {
   language: string;
 }
 
-export interface MenuCategoryId {
+export interface Id {
   id: string;
 }
 
@@ -60,7 +59,7 @@ export interface UpdateMenuCategoryRequest {
 }
 
 export interface ChangeMenuCategoryPositionRequest {
-  menuCategoryId: string;
+  id: string;
   oldPosition: number;
   newPosition: number;
 }
@@ -73,11 +72,11 @@ export interface StatusResponse {
 export const MENU_CATEGORY_PACKAGE_NAME = "menuCategory";
 
 export interface MenuCategoryServiceClient {
-  getMenuCategoriesByLanguage(request: MenuCategoryLanguage): Observable<MenuCategories>;
+  getMenuCategoriesByLanguage(request: Language): Observable<MenuCategoryList>;
 
-  getAllMenuCategories(request: Empty): Observable<MenuCategories>;
+  getAllMenuCategories(request: Empty): Observable<MenuCategoryList>;
 
-  getMenuCategoryById(request: MenuCategoryId): Observable<MenuCategory>;
+  getMenuCategoryById(request: Id): Observable<MenuCategory>;
 
   createMenuCategory(request: CreateMenuCategoryRequest): Observable<MenuCategory>;
 
@@ -85,17 +84,17 @@ export interface MenuCategoryServiceClient {
 
   changeMenuCategoryPosition(request: ChangeMenuCategoryPositionRequest): Observable<MenuCategory>;
 
-  deleteMenuCategory(request: MenuCategoryId): Observable<StatusResponse>;
+  deleteMenuCategory(request: Id): Observable<StatusResponse>;
 }
 
 export interface MenuCategoryServiceController {
   getMenuCategoriesByLanguage(
-    request: MenuCategoryLanguage,
-  ): Promise<MenuCategories> | Observable<MenuCategories> | MenuCategories;
+    request: Language,
+  ): Promise<MenuCategoryList> | Observable<MenuCategoryList> | MenuCategoryList;
 
-  getAllMenuCategories(request: Empty): Promise<MenuCategories> | Observable<MenuCategories> | MenuCategories;
+  getAllMenuCategories(request: Empty): Promise<MenuCategoryList> | Observable<MenuCategoryList> | MenuCategoryList;
 
-  getMenuCategoryById(request: MenuCategoryId): Promise<MenuCategory> | Observable<MenuCategory> | MenuCategory;
+  getMenuCategoryById(request: Id): Promise<MenuCategory> | Observable<MenuCategory> | MenuCategory;
 
   createMenuCategory(
     request: CreateMenuCategoryRequest,
@@ -109,7 +108,7 @@ export interface MenuCategoryServiceController {
     request: ChangeMenuCategoryPositionRequest,
   ): Promise<MenuCategory> | Observable<MenuCategory> | MenuCategory;
 
-  deleteMenuCategory(request: MenuCategoryId): Promise<StatusResponse> | Observable<StatusResponse> | StatusResponse;
+  deleteMenuCategory(request: Id): Promise<StatusResponse> | Observable<StatusResponse> | StatusResponse;
 }
 
 export function MenuCategoryServiceControllerMethods() {

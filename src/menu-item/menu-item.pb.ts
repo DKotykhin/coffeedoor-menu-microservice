@@ -12,15 +12,11 @@ export interface MenuItem {
   price: string;
   hidden: boolean;
   position: number;
-  category: Id | undefined;
+  menuCategory: Id | undefined;
 }
 
-export interface MenuItems {
-  items: MenuItem[];
-}
-
-export interface MenuCategoryId {
-  categoryId: string;
+export interface MenuItemList {
+  menuItemList: MenuItem[];
 }
 
 export interface Id {
@@ -34,7 +30,7 @@ export interface CreateMenuItemRequest {
   price: string;
   hidden: boolean;
   position: number;
-  categoryId: string;
+  menuCategory: Id | undefined;
 }
 
 export interface UpdateMenuItemRequest {
@@ -47,7 +43,7 @@ export interface UpdateMenuItemRequest {
 }
 
 export interface ChangeMenuItemPositionRequest {
-  menuItemId: string;
+  id: string;
   oldPosition: number;
   newPosition: number;
 }
@@ -60,7 +56,7 @@ export interface StatusResponse {
 export const MENU_ITEM_PACKAGE_NAME = "menuItem";
 
 export interface MenuItemServiceClient {
-  getMenuItemsByCategoryId(request: MenuCategoryId): Observable<MenuItems>;
+  getMenuItemsByCategoryId(request: Id): Observable<MenuItemList>;
 
   getMenuItemById(request: Id): Observable<MenuItem>;
 
@@ -74,7 +70,7 @@ export interface MenuItemServiceClient {
 }
 
 export interface MenuItemServiceController {
-  getMenuItemsByCategoryId(request: MenuCategoryId): Promise<MenuItems> | Observable<MenuItems> | MenuItems;
+  getMenuItemsByCategoryId(request: Id): Promise<MenuItemList> | Observable<MenuItemList> | MenuItemList;
 
   getMenuItemById(request: Id): Promise<MenuItem> | Observable<MenuItem> | MenuItem;
 

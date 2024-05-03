@@ -22,16 +22,15 @@ message MenuItem {
   string price = 5;
   bool hidden = 6;
   int32 position = 7;
-  string category = 8;
 }
-message MenuCategories {
-  repeated MenuCategory menuCategories = 1;
+message MenuCategoryList {
+  repeated MenuCategory menuCategoryList = 1;
 }
 
-message MenuCategoryLanguage {
+message Language {
   string language = 1;
 }
-message MenuCategoryId {
+message Id {
   string id = 1;
 }
 message CreateMenuCategoryRequest {
@@ -51,7 +50,7 @@ message UpdateMenuCategoryRequest {
   optional int32 position = 6;
 }
 message ChangeMenuCategoryPositionRequest {
-  string menuCategoryId = 1;
+  string id = 1;
   int32 oldPosition = 2;
   int32 newPosition = 3;
 }
@@ -61,13 +60,13 @@ message StatusResponse {
 }
 
 service MenuCategoryService {
-  rpc GetMenuCategoriesByLanguage(MenuCategoryLanguage) returns (MenuCategories) {}
-  rpc GetAllMenuCategories(Empty) returns (MenuCategories) {}
-  rpc GetMenuCategoryById(MenuCategoryId) returns (MenuCategory) {}
+  rpc GetMenuCategoriesByLanguage(Language) returns (MenuCategoryList) {}
+  rpc GetAllMenuCategories(Empty) returns (MenuCategoryList) {}
+  rpc GetMenuCategoryById(Id) returns (MenuCategory) {}
   rpc CreateMenuCategory(CreateMenuCategoryRequest) returns (MenuCategory) {}
   rpc UpdateMenuCategory(UpdateMenuCategoryRequest) returns (MenuCategory) {}
   rpc ChangeMenuCategoryPosition(ChangeMenuCategoryPositionRequest) returns (MenuCategory) {}
-  rpc DeleteMenuCategory(MenuCategoryId) returns (StatusResponse) {}
+  rpc DeleteMenuCategory(Id) returns (StatusResponse) {}
 }
 
 // protoc --plugin=./node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=./ --ts_proto_opt=nestJs=true ./proto/menu-category.proto

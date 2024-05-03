@@ -24,7 +24,7 @@ export class MenuCategory extends BaseEntity {
   @Column({ default: 0 })
   position: number;
 
-  @OneToMany(() => MenuItem, (item) => item.category, { cascade: true })
+  @OneToMany(() => MenuItem, (item) => item.menuCategory, { cascade: true })
   menuItems: MenuItem[];
 
   constructor(partial: Partial<MenuCategory>) {

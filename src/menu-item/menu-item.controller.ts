@@ -20,14 +20,14 @@ export class MenuItemController {
 
   @GrpcMethod(MENU_ITEM_SERVICE_NAME, 'GetMenuItemsByCategoryId')
   async getMenuItemsByCategoryId({
-    categoryId,
+    id,
   }: {
-    categoryId: string;
-  }): Promise<{ items: MenuItem[] }> {
+    id: string;
+  }): Promise<{ menuItemList: MenuItem[] }> {
     this.logger.log('Received findMenuItemsByCategoryId request');
-    const items =
-      await this.menuItemService.getMenuItemsByCategoryId(categoryId);
-    return { items };
+    const menuItemList =
+      await this.menuItemService.getMenuItemsByCategoryId(id);
+    return { menuItemList };
   }
 
   @GrpcMethod(MENU_ITEM_SERVICE_NAME, 'GetMenuItemById')
