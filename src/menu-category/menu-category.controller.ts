@@ -8,6 +8,7 @@ import {
   ChangeMenuCategoryPositionRequest,
   CreateMenuCategoryRequest,
   MENU_CATEGORY_SERVICE_NAME,
+  MenuCategoryList,
   MenuCategoryServiceControllerMethods,
   StatusResponse,
   UpdateMenuCategoryRequest,
@@ -24,23 +25,20 @@ export class MenuCategoryController {
     language,
   }: {
     language: LanguageCode;
-  }): Promise<{ menuCategoryList: MenuCategory[] }> {
-    this.logger.log('Received findMenuCategoryByLanguage request');
-    const menuCategoryList =
-      await this.menuCategoryService.findByLanguage(language);
-    return { menuCategoryList };
+  }): Promise<MenuCategoryList> {
+    this.logger.log('Received getMenuCategoriesByLanguage request');
+    return await this.menuCategoryService.findByLanguage(language);
   }
 
   @GrpcMethod(MENU_CATEGORY_SERVICE_NAME, 'GetAllMenuCategories')
-  async getAllMenuCategories() {
-    this.logger.log('Received findAllMenuCategory request');
-    const menuCategoryList = await this.menuCategoryService.findAll();
-    return { menuCategoryList };
+  async getAllMenuCategories(): Promise<MenuCategoryList> {
+    this.logger.log('Received getAllMenuCategories request');
+    return await this.menuCategoryService.findAll();
   }
 
   @GrpcMethod(MENU_CATEGORY_SERVICE_NAME, 'GetMenuCategoryById')
   getMenuCategoryById({ id }: { id: string }): Promise<MenuCategory> {
-    this.logger.log('Received findMenuCategoryById request');
+    this.logger.log('Received getMenuCategoryById request');
     return this.menuCategoryService.findById(id);
   }
 

@@ -8,6 +8,7 @@ import { MenuItem } from './entities/menu-item.entity';
 import {
   ChangeMenuItemPositionRequest,
   CreateMenuItemRequest,
+  MenuItemList,
   StatusResponse,
   UpdateMenuItemRequest,
 } from './menu-item.pb';
@@ -21,14 +22,15 @@ export class MenuItemService {
   ) {}
   protected readonly logger = new Logger(MenuItemService.name);
 
-  async getMenuItemsByCategoryId(id: string): Promise<any> {
+  async getMenuItemsByCategoryId(id: string): Promise<MenuItemList> {
     try {
-      return await this.menuItemRepository.find({
+      const menuItemList = await this.menuItemRepository.find({
         where: { menuCategory: { id } },
         order: {
           position: 'ASC',
         },
       });
+      return { menuItemList };
     } catch (error) {
       this.logger.error(error?.message);
       throw ErrorImplementation.notFound('Menu items not found');

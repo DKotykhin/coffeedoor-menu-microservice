@@ -8,6 +8,7 @@ import { MenuCategory } from './entities/menu-category.entity';
 import {
   ChangeMenuCategoryPositionRequest,
   CreateMenuCategoryRequest,
+  MenuCategoryList,
   StatusResponse,
   UpdateMenuCategoryRequest,
 } from './menu-category.pb';
@@ -21,9 +22,9 @@ export class MenuCategoryService {
   ) {}
   protected readonly logger = new Logger(MenuCategoryService.name);
 
-  async findByLanguage(language: LanguageCode): Promise<MenuCategory[]> {
+  async findByLanguage(language: LanguageCode): Promise<MenuCategoryList> {
     try {
-      return await this.menuCategoryRepository.find({
+      const menuCategoryList = await this.menuCategoryRepository.find({
         where: {
           language,
           hidden: false,
@@ -36,15 +37,16 @@ export class MenuCategoryService {
           },
         },
       });
+      return { menuCategoryList };
     } catch (error) {
       this.logger.error(error?.message);
       throw ErrorImplementation.forbidden(error.message);
     }
   }
 
-  async findAll(): Promise<MenuCategory[]> {
+  async findAll(): Promise<MenuCategoryList> {
     try {
-      return await this.menuCategoryRepository.find({
+      const menuCategoryList = await this.menuCategoryRepository.find({
         relations: ['menuItems'],
         order: {
           position: 'ASC',
@@ -53,6 +55,7 @@ export class MenuCategoryService {
           },
         },
       });
+      return { menuCategoryList };
     } catch (error) {
       this.logger.error(error?.message);
       throw ErrorImplementation.forbidden(error.message);

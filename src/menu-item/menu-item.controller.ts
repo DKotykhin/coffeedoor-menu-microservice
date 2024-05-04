@@ -7,6 +7,7 @@ import {
   ChangeMenuItemPositionRequest,
   CreateMenuItemRequest,
   MENU_ITEM_SERVICE_NAME,
+  MenuItemList,
   MenuItemServiceControllerMethods,
   StatusResponse,
   UpdateMenuItemRequest,
@@ -23,16 +24,14 @@ export class MenuItemController {
     id,
   }: {
     id: string;
-  }): Promise<{ menuItemList: MenuItem[] }> {
-    this.logger.log('Received findMenuItemsByCategoryId request');
-    const menuItemList =
-      await this.menuItemService.getMenuItemsByCategoryId(id);
-    return { menuItemList };
+  }): Promise<MenuItemList> {
+    this.logger.log('Received getMenuItemsByCategoryId request');
+    return await this.menuItemService.getMenuItemsByCategoryId(id);
   }
 
   @GrpcMethod(MENU_ITEM_SERVICE_NAME, 'GetMenuItemById')
   async getMenuItemById({ id }: { id: string }): Promise<MenuItem> {
-    this.logger.log('Received findMenuItemById request');
+    this.logger.log('Received getMenuItemById request');
     return await this.menuItemService.findById(id);
   }
 
