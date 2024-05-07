@@ -4,10 +4,11 @@ import { EntityManager, Repository } from 'typeorm';
 
 import { LanguageCode } from '../database/db.enums';
 import { ErrorImplementation } from '../utils/error-implementation';
-import { MenuItem } from './entities/menu-item.entity';
+import { MenuItem as MenuItemEntity } from './entities/menu-item.entity';
 import {
   ChangeMenuItemPositionRequest,
   CreateMenuItemRequest,
+  MenuItem,
   MenuItemList,
   StatusResponse,
   UpdateMenuItemRequest,
@@ -16,7 +17,7 @@ import {
 @Injectable()
 export class MenuItemService {
   constructor(
-    @InjectRepository(MenuItem)
+    @InjectRepository(MenuItemEntity)
     private readonly menuItemRepository: Repository<MenuItem>,
     private readonly entityManager: EntityManager,
   ) {}
@@ -55,7 +56,7 @@ export class MenuItemService {
 
   async create(createMenuItemDto: CreateMenuItemRequest): Promise<MenuItem> {
     try {
-      return await this.entityManager.save(MenuItem, {
+      return await this.entityManager.save(MenuItemEntity, {
         ...createMenuItemDto,
         language: createMenuItemDto.language as LanguageCode,
       });
@@ -73,9 +74,8 @@ export class MenuItemService {
       if (!menuItemToUpdate) {
         throw ErrorImplementation.notFound('Menu item not found');
       }
-      return await this.entityManager.save(MenuItem, {
-        ...updateMenuItemDto,
-      });
+      Object.assign(menuItemToUpdate, updateMenuItemDto);
+      return await this.entityManager.save('MenuItem', menuItemToUpdate);
     } catch (error) {
       this.logger.error(error?.message);
       throw ErrorImplementation.forbidden(error?.message);
@@ -99,7 +99,7 @@ export class MenuItemService {
       const { language, menuCategory } = menuItem;
       await this.menuItemRepository
         .createQueryBuilder()
-        .update(MenuItem)
+        .update(MenuItemEntity)
         .set({
           position: () => `position ${oldPosition < newPosition ? '-' : '+'} 1`,
         })

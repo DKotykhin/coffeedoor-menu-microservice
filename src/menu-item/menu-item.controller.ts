@@ -2,11 +2,11 @@ import { Controller, Logger } from '@nestjs/common';
 import { GrpcMethod } from '@nestjs/microservices';
 
 import { MenuItemService } from './menu-item.service';
-import { MenuItem } from './entities/menu-item.entity';
 import {
   ChangeMenuItemPositionRequest,
   CreateMenuItemRequest,
   MENU_ITEM_SERVICE_NAME,
+  MenuItem,
   MenuItemList,
   MenuItemServiceControllerMethods,
   StatusResponse,

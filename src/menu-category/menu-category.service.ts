@@ -4,10 +4,11 @@ import { EntityManager, Repository } from 'typeorm';
 
 import { LanguageCode } from '../database/db.enums';
 import { ErrorImplementation } from '../utils/error-implementation';
-import { MenuCategory } from './entities/menu-category.entity';
+import { MenuCategory as MenuCategoryEntity } from './entities/menu-category.entity';
 import {
   ChangeMenuCategoryPositionRequest,
   CreateMenuCategoryRequest,
+  MenuCategory,
   MenuCategoryList,
   StatusResponse,
   UpdateMenuCategoryRequest,
@@ -16,7 +17,7 @@ import {
 @Injectable()
 export class MenuCategoryService {
   constructor(
-    @InjectRepository(MenuCategory)
+    @InjectRepository(MenuCategoryEntity)
     private readonly menuCategoryRepository: Repository<MenuCategory>,
     private readonly entityManager: EntityManager,
   ) {}
@@ -63,7 +64,6 @@ export class MenuCategoryService {
   }
 
   async findById(id: string): Promise<MenuCategory> {
-    // return await this.entityManager.findOne('MenuCategory', { where: { id } });
     try {
       const menuCategory = await this.menuCategoryRepository.findOne({
         where: { id },
@@ -82,12 +82,11 @@ export class MenuCategoryService {
   async create(
     createMenuCategoryDto: CreateMenuCategoryRequest,
   ): Promise<MenuCategory> {
-    const menuCategory = new MenuCategory({
-      ...createMenuCategoryDto,
-      language: createMenuCategoryDto.language as LanguageCode,
-    });
     try {
-      return await this.entityManager.save('MenuCategory', menuCategory);
+      return await this.entityManager.save(MenuCategoryEntity, {
+        ...createMenuCategoryDto,
+        language: createMenuCategoryDto.language as LanguageCode,
+      });
     } catch (error) {
       this.logger.error(error?.message);
       throw ErrorImplementation.forbidden("Couldn't create menu category");
@@ -124,7 +123,7 @@ export class MenuCategoryService {
       });
       await this.menuCategoryRepository
         .createQueryBuilder()
-        .update(MenuCategory)
+        .update(MenuCategoryEntity)
         .set({
           position: () => `position ${oldPosition < newPosition ? '-' : '+'} 1`,
         })
