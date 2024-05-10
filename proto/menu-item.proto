@@ -22,7 +22,7 @@ message Id {
 message CreateMenuItemRequest {
   string language = 1;
   string title = 2;
-  string description = 3;
+  optional string description = 3;
   string price = 4;
   bool hidden = 5;
   int32 position = 6;
@@ -37,10 +37,10 @@ message UpdateMenuItemRequest {
   optional int32 position = 6;
 }
 message ChangeMenuItemPositionRequest {
-    string id = 1;
-    int32 oldPosition = 2;
-    int32 newPosition = 3;
-  }
+  string id = 1;
+  int32 oldPosition = 2;
+  int32 newPosition = 3;
+}
 message StatusResponse {
   bool status = 1;
   string message = 2;

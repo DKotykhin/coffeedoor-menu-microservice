@@ -18,7 +18,7 @@ import {
 export class MenuCategoryService {
   constructor(
     @InjectRepository(MenuCategoryEntity)
-    private readonly menuCategoryRepository: Repository<MenuCategory>,
+    private readonly menuCategoryRepository: Repository<MenuCategoryEntity>,
     private readonly entityManager: EntityManager,
   ) {}
   protected readonly logger = new Logger(MenuCategoryService.name);

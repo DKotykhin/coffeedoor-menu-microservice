@@ -26,9 +26,4 @@ export class MenuCategory extends BaseEntity {
 
   @OneToMany(() => MenuItem, (item) => item.menuCategory, { cascade: true })
   menuItems: MenuItem[];
-
-  constructor(partial: Partial<MenuCategory>) {
-    super(partial);
-    Object.assign(this, partial);
-  }
 }

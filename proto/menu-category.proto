@@ -12,6 +12,15 @@ message MenuCategory {
   string image = 5;
   bool hidden = 6;
   int32 position = 7;
+}
+message MenuCategoryWithMenuItems {
+  string id = 1;
+  string language = 2;
+  string title = 3;
+  string description = 4;
+  string image = 5;
+  bool hidden = 6;
+  int32 position = 7;
   repeated MenuItem menuItems = 8;
 }
 message MenuItem {
@@ -24,7 +33,7 @@ message MenuItem {
   int32 position = 7;
 }
 message MenuCategoryList {
-  repeated MenuCategory menuCategoryList = 1;
+  repeated MenuCategoryWithMenuItems menuCategoryList = 1;
 }
 
 message Language {
@@ -37,8 +46,8 @@ message CreateMenuCategoryRequest {
   string language = 1;
   string title = 2;
   string description = 3;
-  string image = 4;
-  bool hidden = 5;
+  optional string image = 4;
+  optional bool hidden = 5;
   int32 position = 6;
 }
 message UpdateMenuCategoryRequest {
@@ -62,7 +71,7 @@ message StatusResponse {
 service MenuCategoryService {
   rpc GetMenuCategoriesByLanguage(Language) returns (MenuCategoryList) {}
   rpc GetAllMenuCategories(Empty) returns (MenuCategoryList) {}
-  rpc GetMenuCategoryById(Id) returns (MenuCategory) {}
+  rpc GetMenuCategoryById(Id) returns (MenuCategoryWithMenuItems) {}
   rpc CreateMenuCategory(CreateMenuCategoryRequest) returns (MenuCategory) {}
   rpc UpdateMenuCategory(UpdateMenuCategoryRequest) returns (MenuCategory) {}
   rpc ChangeMenuCategoryPosition(ChangeMenuCategoryPositionRequest) returns (MenuCategory) {}

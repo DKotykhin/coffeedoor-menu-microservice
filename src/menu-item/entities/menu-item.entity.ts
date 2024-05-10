@@ -29,9 +29,4 @@ export class MenuItem extends BaseEntity {
     nullable: false,
   })
   menuCategory: MenuCategory;
-
-  constructor(partial: Partial<MenuItem>) {
-    super(partial);
-    Object.assign(this, partial);
-  }
 }
