@@ -41,7 +41,7 @@ export class MenuCategoryService {
       return { menuCategoryList };
     } catch (error) {
       this.logger.error(error?.message);
-      throw ErrorImplementation.forbidden(error.message);
+      throw ErrorImplementation.notFound(error.message);
     }
   }
 
@@ -59,7 +59,7 @@ export class MenuCategoryService {
       return { menuCategoryList };
     } catch (error) {
       this.logger.error(error?.message);
-      throw ErrorImplementation.forbidden(error.message);
+      throw ErrorImplementation.notFound(error.message);
     }
   }
 
@@ -75,7 +75,10 @@ export class MenuCategoryService {
       return menuCategory;
     } catch (error) {
       this.logger.error(error?.message);
-      throw ErrorImplementation.notFound(error?.message);
+      throw new ErrorImplementation({
+        message: error?.message,
+        code: error.error?.code || 13,
+      });
     }
   }
 
@@ -105,7 +108,10 @@ export class MenuCategoryService {
       return await this.entityManager.save('MenuCategory', menuCategory);
     } catch (error) {
       this.logger.error(error?.message);
-      throw ErrorImplementation.forbidden(error?.message);
+      throw new ErrorImplementation({
+        message: error?.message,
+        code: error.error?.code || 13,
+      });
     }
   }
 
@@ -114,9 +120,12 @@ export class MenuCategoryService {
   ): Promise<MenuCategory> {
     try {
       const { id, oldPosition, newPosition } = changeMenuCategoryPosition;
-      const menuCategory = await this.menuCategoryRepository.findOneOrFail({
+      const menuCategory = await this.menuCategoryRepository.findOne({
         where: { id },
       });
+      if (!menuCategory) {
+        throw ErrorImplementation.notFound('Menu category not found');
+      }
       const updatedMenuCategory = await this.menuCategoryRepository.save({
         ...menuCategory,
         position: newPosition,
@@ -137,9 +146,10 @@ export class MenuCategoryService {
       return updatedMenuCategory;
     } catch (error) {
       this.logger.error(error?.message);
-      throw ErrorImplementation.forbidden(
-        "Couldn't change menu category position",
-      );
+      throw new ErrorImplementation({
+        message: error?.message,
+        code: error.error?.code || 13,
+      });
     }
   }
 
@@ -155,7 +165,10 @@ export class MenuCategoryService {
       };
     } catch (error) {
       this.logger.error(error?.message);
-      throw ErrorImplementation.forbidden(error?.message);
+      throw new ErrorImplementation({
+        message: error?.message,
+        code: error.error?.code || 13,
+      });
     }
   }
 }

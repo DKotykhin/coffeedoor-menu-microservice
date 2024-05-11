@@ -50,7 +50,10 @@ export class MenuItemService {
       return menuItem;
     } catch (error) {
       this.logger.error(error?.message);
-      throw ErrorImplementation.notFound(error?.message);
+      throw new ErrorImplementation({
+        message: error?.message,
+        code: error.error?.code || 13,
+      });
     }
   }
 
@@ -78,7 +81,10 @@ export class MenuItemService {
       return await this.entityManager.save('MenuItem', menuItemToUpdate);
     } catch (error) {
       this.logger.error(error?.message);
-      throw ErrorImplementation.forbidden(error?.message);
+      throw new ErrorImplementation({
+        message: error?.message,
+        code: error.error?.code || 13,
+      });
     }
   }
 
@@ -87,10 +93,13 @@ export class MenuItemService {
   ): Promise<MenuItem> {
     try {
       const { id, oldPosition, newPosition } = changeMenuItemPosition;
-      const menuItem = await this.menuItemRepository.findOneOrFail({
+      const menuItem = await this.menuItemRepository.findOne({
         where: { id },
         relations: ['menuCategory'],
       });
+      if (!menuItem) {
+        throw ErrorImplementation.notFound('Menu item not found');
+      }
       const updatedMenuItem = await this.menuItemRepository.save({
         ...menuItem,
         position: newPosition,
@@ -117,7 +126,10 @@ export class MenuItemService {
       return updatedMenuItem;
     } catch (error) {
       this.logger.error(error?.message);
-      throw ErrorImplementation.forbidden('Menu item position not updated');
+      throw new ErrorImplementation({
+        message: error?.message,
+        code: error.error?.code || 13,
+      });
     }
   }
 
@@ -133,7 +145,10 @@ export class MenuItemService {
       };
     } catch (error) {
       this.logger.error(error?.message);
-      throw ErrorImplementation.forbidden(error?.message);
+      throw new ErrorImplementation({
+        message: error?.message,
+        code: error.error?.code || 13,
+      });
     }
   }
 }
