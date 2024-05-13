@@ -59,7 +59,7 @@ export interface Id {
 export interface CreateMenuCategoryRequest {
   language: string;
   title: string;
-  description: string;
+  description?: string | undefined;
   image?: string | undefined;
   hidden?: boolean | undefined;
   position: number;

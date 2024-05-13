@@ -34,7 +34,7 @@ export interface CreateMenuItemRequest {
   title: string;
   description?: string | undefined;
   price: string;
-  hidden: boolean;
+  hidden?: boolean | undefined;
   position: number;
   menuCategory: Id | undefined;
 }

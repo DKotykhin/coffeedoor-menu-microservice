@@ -45,7 +45,7 @@ message Id {
 message CreateMenuCategoryRequest {
   string language = 1;
   string title = 2;
-  string description = 3;
+  optional string description = 3;
   optional string image = 4;
   optional bool hidden = 5;
   int32 position = 6;

@@ -3,7 +3,6 @@ import { GrpcMethod } from '@nestjs/microservices';
 
 import { LanguageCode } from '../database/db.enums';
 import { MenuCategoryService } from './menu-category.service';
-// import { MenuCategory } from './entities/menu-category.entity';
 import {
   ChangeMenuCategoryPositionRequest,
   CreateMenuCategoryRequest,

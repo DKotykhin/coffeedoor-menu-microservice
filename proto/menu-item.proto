@@ -24,7 +24,7 @@ message CreateMenuItemRequest {
   string title = 2;
   optional string description = 3;
   string price = 4;
-  bool hidden = 5;
+  optional bool hidden = 5;
   int32 position = 6;
   Id menuCategory = 7;
 }
