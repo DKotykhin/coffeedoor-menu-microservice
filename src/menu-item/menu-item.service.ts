@@ -33,7 +33,7 @@ export class MenuItemService {
       });
       return { menuItemList };
     } catch (error) {
-      this.logger.error(error?.message);
+      this.logger.error(error.message);
       throw ErrorImplementation.notFound('Menu items not found');
     }
   }
@@ -49,9 +49,9 @@ export class MenuItemService {
       }
       return menuItem;
     } catch (error) {
-      this.logger.error(error?.message);
+      this.logger.error(error.message);
       throw new ErrorImplementation({
-        message: error?.message,
+        message: error.message,
         code: error.error?.code || 13,
       });
     }
@@ -64,7 +64,7 @@ export class MenuItemService {
         language: createMenuItemDto.language as LanguageCode,
       });
     } catch (error) {
-      this.logger.error(error?.message);
+      this.logger.error(error.message);
       throw ErrorImplementation.forbidden('Menu item not created');
     }
   }
@@ -80,9 +80,9 @@ export class MenuItemService {
       Object.assign(menuItemToUpdate, updateMenuItemDto);
       return await this.entityManager.save('MenuItem', menuItemToUpdate);
     } catch (error) {
-      this.logger.error(error?.message);
+      this.logger.error(error.message);
       throw new ErrorImplementation({
-        message: error?.message,
+        message: error.message,
         code: error.error?.code || 13,
       });
     }
@@ -125,9 +125,9 @@ export class MenuItemService {
 
       return updatedMenuItem;
     } catch (error) {
-      this.logger.error(error?.message);
+      this.logger.error(error.message);
       throw new ErrorImplementation({
-        message: error?.message,
+        message: error.message,
         code: error.error?.code || 13,
       });
     }
@@ -144,9 +144,9 @@ export class MenuItemService {
         message: `Menu item ${id} successfully deleted`,
       };
     } catch (error) {
-      this.logger.error(error?.message);
+      this.logger.error(error.message);
       throw new ErrorImplementation({
-        message: error?.message,
+        message: error.message,
         code: error.error?.code || 13,
       });
     }

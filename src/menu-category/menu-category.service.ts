@@ -40,7 +40,7 @@ export class MenuCategoryService {
       });
       return { menuCategoryList };
     } catch (error) {
-      this.logger.error(error?.message);
+      this.logger.error(error.message);
       throw ErrorImplementation.notFound(error.message);
     }
   }
@@ -58,7 +58,7 @@ export class MenuCategoryService {
       });
       return { menuCategoryList };
     } catch (error) {
-      this.logger.error(error?.message);
+      this.logger.error(error.message);
       throw ErrorImplementation.notFound(error.message);
     }
   }
@@ -74,9 +74,9 @@ export class MenuCategoryService {
       }
       return menuCategory;
     } catch (error) {
-      this.logger.error(error?.message);
+      this.logger.error(error.message);
       throw new ErrorImplementation({
-        message: error?.message,
+        message: error.message,
         code: error.error?.code || 13,
       });
     }
@@ -91,7 +91,7 @@ export class MenuCategoryService {
         language: createMenuCategoryDto.language as LanguageCode,
       });
     } catch (error) {
-      this.logger.error(error?.message);
+      this.logger.error(error.message);
       throw ErrorImplementation.forbidden("Couldn't create menu category");
     }
   }
@@ -107,9 +107,9 @@ export class MenuCategoryService {
       Object.assign(menuCategory, updateMenuCategoryDto);
       return await this.entityManager.save('MenuCategory', menuCategory);
     } catch (error) {
-      this.logger.error(error?.message);
+      this.logger.error(error.message);
       throw new ErrorImplementation({
-        message: error?.message,
+        message: error.message,
         code: error.error?.code || 13,
       });
     }
@@ -145,9 +145,9 @@ export class MenuCategoryService {
         .execute();
       return updatedMenuCategory;
     } catch (error) {
-      this.logger.error(error?.message);
+      this.logger.error(error.message);
       throw new ErrorImplementation({
-        message: error?.message,
+        message: error.message,
         code: error.error?.code || 13,
       });
     }
@@ -164,9 +164,9 @@ export class MenuCategoryService {
         message: `Menu category ${id} successfully deleted`,
       };
     } catch (error) {
-      this.logger.error(error?.message);
+      this.logger.error(error.message);
       throw new ErrorImplementation({
-        message: error?.message,
+        message: error.message,
         code: error.error?.code || 13,
       });
     }
