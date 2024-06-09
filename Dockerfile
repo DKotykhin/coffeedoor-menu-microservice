@@ -1,5 +1,5 @@
 #standalone container
-FROM node:20 as dev
+FROM node:alpine as dev
 
 WORKDIR /app
 
@@ -12,12 +12,11 @@ COPY . /app
 
 RUN npm run build
 
-# CMD [ "npm", "run", "start:dev" ]
 CMD [ "npm", "start" ]
 
 
 # common container
-FROM node:20 as prod
+FROM node:alpine as prod
 
 WORKDIR /coffeedoor-menu-microservice
 
@@ -33,3 +32,18 @@ COPY /coffeedoor-menu-microservice /coffeedoor-menu-microservice
 RUN npm run build
 
 CMD [ "npm", "start" ]
+
+# kubernetes container
+# FROM node:alpine
+
+# WORKDIR /app
+
+# COPY package*.json /app
+
+# RUN npm install
+
+# COPY . /app 
+
+# RUN npm run build
+
+# CMD ["node", "dist/main"]

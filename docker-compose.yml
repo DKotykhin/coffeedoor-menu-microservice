@@ -7,11 +7,11 @@ services:
     ports:
       - "5001:5001"
     depends_on:
-      - menu_postgres_db
+      - menu-postgres-db
     env_file:
       - .env.stage.docker
 
-  menu_postgres_db:
+  menu-postgres-db:
     container_name: postgres-menu_db
     image: postgres:latest
     ports:
